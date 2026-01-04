@@ -2,10 +2,10 @@
 #include <stdlib.h>
 #include <string.h>
 
-// --- DEFINITIONS ---
+
 
 typedef struct Node {
-    void *data; // Generic data
+    void *data; 
     struct Node *prev;
     struct Node *next;
 } Node;
@@ -16,11 +16,11 @@ typedef struct DLL {
     int size;
 } DLL;
 
-// Định nghĩa kiểu hàm callback cho gọn
+
 typedef void (*PrintFn)(void *);
 typedef void (*FreeFn)(void *);
 
-// --- IMPLEMENTATION ---
+
 
 Node *create_node(void *value) {
     Node *new_node = malloc(sizeof(Node));
@@ -36,7 +36,7 @@ Node *create_node(void *value) {
     return new_node;
 }
 
-// TODO: Tạo một List rỗng
+
 DLL *create_dll() {
     DLL *list = malloc(sizeof(DLL));
     if (list == NULL) {
@@ -54,10 +54,10 @@ DLL *create_dll() {
 void append(DLL *list, void *data) {
     if (list == NULL) {
         fprintf(stderr, "Error: List pointer cannot be NULL.\n");
-        return; // Trả về 0 (false) thay vì exit
+        return; 
     }
 
-    // Check 2: Valid data
+    
     if (data == NULL) {
         fprintf(stderr, "Error: Data cannot be NULL.\n");
         return;
@@ -132,15 +132,15 @@ void destroy_list(DLL *list, FreeFn free_fn) {
     return;
 }
 
-// --- USER DEFINED FUNCTIONS (Callback) ---
-// Giả sử ta lưu kiểu "Person" trong list
+
+
 
 typedef struct Person {
     char name[32];
     int age;
 } Person;
 
-// Helper tạo Person
+
 Person *create_person(const char *name, int age) {
     Person *p = malloc(sizeof(Person));
     strcpy(p->name, name);
@@ -148,25 +148,25 @@ Person *create_person(const char *name, int age) {
     return p;
 }
 
-// Hàm này sẽ được truyền vào print_list
+
 void print_person(void *data) {
-    Person *p = (Person *)data; // Ép kiểu từ void* về Person*
+    Person *p = (Person *)data; 
     printf("[Name: %s, Age: %d] <-> ", p->name, p->age);
 }
 
-// Hàm này sẽ được truyền vào destroy_list
+
 void free_person(void *data) {
-    free(data); // Free vùng nhớ của struct Person
+    free(data); 
 }
 
-// --- MAIN ---
+
 
 int main() {
     printf("=== Generic Doubly Linked List ===\n");
 
     DLL *my_list = create_dll();
 
-    // Thêm dữ liệu (Heap)
+    
     append(my_list, create_person("Alice", 25));
     append(my_list, create_person("Bob", 30));
     append(my_list, create_person("Charlie", 22));
@@ -174,12 +174,12 @@ int main() {
     printf("List Size: %d\n", my_list->size);
     printf("Content: ");
 
-    // Truyền hàm print_person vào đây (Callback)
+    
     print_list(my_list, print_person);
     printf("NULL\n");
 
     printf("\n=== Destroying List ===\n");
-    // Truyền hàm free_person vào để dọn dẹp data
+    
     destroy_list(my_list, free_person);
 
     printf("Clean exit.\n");
